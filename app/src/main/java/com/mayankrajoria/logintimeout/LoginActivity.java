@@ -23,6 +23,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // If user is already loggedin, go to UserActivity
         SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         String loggedinState = sharedpreferences.getString("loggedin", "no");
         Log.d("LA", "Checking state on create: " + loggedinState);
@@ -40,6 +41,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginButton.setOnClickListener(this);
     }
 
+    // Check if the previous loggedin session has expired.
+    // This is done by checking if more than predefined time has
+    // elapsed since last login.
     boolean checkSession() {
         SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         String loggedinState = sharedpreferences.getString("loggedin", "no");
@@ -62,6 +66,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onResume() {
         super.onResume();
+
+        // If user is already loggedin, go to UserActivity
         SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         String loggedinState = sharedpreferences.getString("loggedin", "no");
         Log.d("LA", "Checking state on resume: " + loggedinState);
@@ -74,6 +80,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    // Check if the user input is correct
     boolean validateInput() {
         String useridString = useridET.getText().toString();
         if(useridString.equals("")) {
@@ -104,6 +111,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.login_button:
+                // If user input is correct, mark user as logged in,
+                // move to the UserActivity and finish() this activity.
                 if(validateInput()) {
                     SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedpreferences.edit();

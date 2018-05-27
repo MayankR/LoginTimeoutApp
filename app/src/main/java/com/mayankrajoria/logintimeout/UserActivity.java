@@ -25,6 +25,9 @@ public class UserActivity extends AppCompatActivity {
             int seconds = (int) (millis / 1000);
             int minutes = seconds / 60;
             seconds = seconds % 60;
+
+            // Log out the user is more than 20 have elapsed
+            // since login.
             if(seconds > 20) {
                 Log.d("UA", "Logging out on timer end");
                 SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -56,7 +59,8 @@ public class UserActivity extends AppCompatActivity {
 
         timerTextView = (TextView) findViewById(R.id.timer_TV);
 
-
+        // If a start time exists in SharedPreferences, read it
+        // else set current time as start time.
         SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         if(sharedpreferences.getLong("starttime", 0) != 0) {
             startTime = sharedpreferences.getLong("starttime", 0);
@@ -67,6 +71,8 @@ public class UserActivity extends AppCompatActivity {
         Log.d("UA", "Setting start time in SP");
         editor.putLong("starttime", startTime);
         editor.commit();
+
+        // Start the runnable to keep track of the user's session
         timerHandler.postDelayed(timerRunnable, 0);
     }
 
